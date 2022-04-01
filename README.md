@@ -43,7 +43,3 @@ Unit precision for viewport values
 
 `unitPrecisionPx`
 Unit precision for pixel values
-
-```
-
-```
