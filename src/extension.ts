@@ -94,11 +94,7 @@ function placeholder(
   }
   const config = vscode.workspace.getConfiguration("pxVwConverter");
   const changesMade = new Map();
-  const sizeKeys: { [key: string]: number } = {
-    desktop: 1440,
-    tablet: 834,
-    mobile: 375,
-  };
+  let sizeKeys: { [key: string]: number } = {};
 
   let currentSize: number = config.get("viewportWidth") ?? 1440;
 
@@ -140,6 +136,8 @@ function placeholder(
             }
           }
           let text = textEditor.document.lineAt(index).text.slice(start, end);
+
+          sizeKeys = config.get("breakpoints") ?? {};
 
           //search the current text for any size keys
           for (const key in sizeKeys) {
