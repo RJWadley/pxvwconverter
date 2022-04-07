@@ -2,10 +2,10 @@
   "name": "px-vw-converter",
   "displayName": "px and vw converter",
   "description": "converts px to vw and vice versa",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "publisher": "rjwadley",
   "engines": {
-    "vscode": "^1.66.0"
+    "vscode": "^1.50.0"
   },
   "categories": [
     "Other"
@@ -13,7 +13,10 @@
   "activationEvents": [
     "onCommand:extension.pxToVw",
     "onCommand:extension.vwToPx",
-    "onCommand:extension.pxToVwAndVwToPx"
+    "onCommand:extension.pxToVwAndVwToPx",
+    "onCommand:extension.shortcut0",
+    "onCommand:extension.shortcut1",
+    "onCommand:extension.shortcut2"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -43,6 +46,21 @@
           "type": "integer",
           "default": 0,
           "description": "Unit Precision for px values"
+        },
+        "pxVwConverter.shortcut0": {
+          "type": "string",
+          "default": "mobile",
+          "description": "breakpoint to use for shortcut Alt+M"
+        },
+        "pxVwConverter.shortcut1": {
+          "type": "string",
+          "default": "tablet",
+          "description": "breakpoint to use for shortcut Alt+T"
+        },
+        "pxVwConverter.shortcut2": {
+          "type": "string",
+          "default": "desktop",
+          "description": "breakpoint to use for shortcut Alt+D"
         }
       }
     },
@@ -64,6 +82,18 @@
       {
         "command": "extension.pxToVwAndVwToPx",
         "key": "Alt+z"
+      },
+      {
+        "command": "extension.shortcut0",
+        "key": "Alt+m"
+      },
+      {
+        "command": "extension.shortcut1",
+        "key": "Alt+t"
+      },
+      {
+        "command": "extension.shortcut2",
+        "key": "Alt+d"
       }
     ]
   },

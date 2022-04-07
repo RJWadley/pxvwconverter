@@ -2,6 +2,29 @@ import { parse } from "path";
 import * as vscode from "vscode";
 
 export function activate(context: vscode.ExtensionContext) {
+  // register custom shortcuts
+  for (let i = 0; i < 3; i++) {
+    const config = vscode.workspace.getConfiguration("pxVwConverter");
+    let breakpoint: string | undefined = config.get("shortcut" + i);
+    disposable = vscode.commands.registerTextEditorCommand(
+      "extension.shortcut" + i,
+      function (textEditor, textEditorEdit) {
+        var regexStr = "([0-9]*\\.?[0-9]+)(px|vw)";
+        placeholder(
+          regexStr,
+          (match, value, unit, viewportWidth) =>
+            unit === "px"
+              ? `${px2Vw(parseFloat(value), viewportWidth)}vw`
+              : `${vw2Px(parseFloat(value), viewportWidth)}px`,
+          textEditor,
+          textEditorEdit,
+          breakpoint
+        );
+      }
+    );
+    context.subscriptions.push(disposable);
+  }
+
   var disposable = vscode.commands.registerTextEditorCommand(
     "extension.vwToPx",
     function (textEditor, textEditorEdit) {
@@ -62,6 +85,7 @@ function px2Vw(px: number, viewportWidth: number) {
   const value = parseFloat(((px * 100) / viewportWidth).toFixed(unitPrecision));
   return value;
 }
+
 function vw2Px(vw: number, viewportWidth: number) {
   console.log(vw, viewportWidth);
   const config = vscode.workspace.getConfiguration("pxVwConverter");
@@ -80,7 +104,8 @@ function placeholder(
     viewportWidth: number
   ) => string,
   textEditor: vscode.TextEditor,
-  textEditorEdit: vscode.TextEditorEdit
+  textEditorEdit: vscode.TextEditorEdit,
+  forceBreakpoint?: string
 ) {
   let regexExp = new RegExp(regexString, "i");
   let regexExpG = new RegExp(regexString, "ig");
@@ -144,6 +169,10 @@ function placeholder(
             if (text.includes(key)) {
               currentSize = sizeKeys[key];
             }
+          }
+
+          if (forceBreakpoint && sizeKeys[forceBreakpoint]) {
+            currentSize = sizeKeys[forceBreakpoint];
           }
 
           const matches = text.match(regexExpG);

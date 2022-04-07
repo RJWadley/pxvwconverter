@@ -43,3 +43,8 @@ Unit precision for viewport values
 
 `unitPrecisionPx`
 Unit precision for pixel values
+
+## Extra shortcuts
+
+There are 3 extra keyboard shortcuts that will force the usage of a specific breakpoint
+They are `alt + m`, `alt + t`, and `alt + d`, and they force usage of mobile, tablet, and desktop respectively. This can be configured in settings.
