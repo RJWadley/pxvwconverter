@@ -117,11 +117,44 @@ function placeholder(
   ) {
     return;
   }
+
   const config = vscode.workspace.getConfiguration("pxVwConverter");
   const changesMade = new Map();
   let sizeKeys: { [key: string]: number } = {};
-
   let currentSize: number = config.get("viewportWidth") ?? 1440;
+  let color = "";
+  //array containing colors for a dark material rainbow
+  let colors: string[] = [
+    //dark green
+    "#388e3c",
+    //dark blue
+    "#1976d2",
+    //dark purple
+    "#7b1fa2",
+    //dark red
+    "#d50000",
+    //dark yellow
+    "#fdd835",
+    //dark orange
+    "#ff6f00",
+    //dark teal
+    "#00b0ff",
+    //dark pink
+    "#ad1457",
+    //dark grey
+    "#616161",
+    //dark brown
+    "#6d4c41",
+    //dark indigo
+    "#3f51b5",
+    //dark cyan
+    "#00b8d4",
+    //dark lime
+    "#cddc39",
+  ];
+  let colorMap: {
+    [key: string]: string;
+  } = {};
 
   textEditor
     .edit((builder) => {
@@ -164,15 +197,39 @@ function placeholder(
 
           sizeKeys = config.get("breakpoints") ?? {};
 
+          //assign each size key to a color and store it in colorMap
+          let colorIndex = 0;
+          for (let key in sizeKeys) {
+            colorMap[key] = colors[colorIndex];
+            colorIndex++;
+          }
+
           //search the current text for any size keys
           for (const key in sizeKeys) {
             if (text.includes(key)) {
               currentSize = sizeKeys[key];
+              color = colorMap[key];
             }
           }
 
           if (forceBreakpoint && sizeKeys[forceBreakpoint]) {
             currentSize = sizeKeys[forceBreakpoint];
+          }
+
+          if (config.get("colorize") === true) {
+            //highlight the current line
+            let decorationType = vscode.window.createTextEditorDecorationType({
+              backgroundColor: color,
+            });
+
+            textEditor.setDecorations(decorationType, [
+              textEditor.document.lineAt(index),
+            ]);
+
+            //remove the decoration after a half second
+            setTimeout(() => {
+              textEditor.setDecorations(decorationType, []);
+            }, 500);
           }
 
           const matches = text.match(regexExpG);

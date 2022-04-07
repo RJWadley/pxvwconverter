@@ -37,6 +37,11 @@
           },
           "description": "Breakpoints for responsive conversion"
         },
+        "pxVwConverter.colorize": {
+          "type": "boolean",
+          "default": true,
+          "description": "Color code breakpoints during conversions"
+        },
         "pxVwConverter.unitPrecisionVw": {
           "type": "integer",
           "default": 3,
