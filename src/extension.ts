@@ -131,8 +131,6 @@ function placeholder(
     "#1976d2",
     //dark purple
     "#7b1fa2",
-    //dark red
-    "#d50000",
     //dark yellow
     "#fdd835",
     //dark orange
