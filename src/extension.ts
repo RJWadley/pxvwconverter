@@ -87,11 +87,9 @@ function px2Vw(px: number, viewportWidth: number) {
 }
 
 function vw2Px(vw: number, viewportWidth: number) {
-  console.log(vw, viewportWidth);
   const config = vscode.workspace.getConfiguration("pxVwConverter");
   var unitPrecision: number | undefined = config.get("unitPrecisionPx");
   const value = parseFloat(((vw / 100) * viewportWidth).toFixed(unitPrecision));
-  console.log(value);
   return value;
 }
 
@@ -121,7 +119,9 @@ function placeholder(
   const config = vscode.workspace.getConfiguration("pxVwConverter");
   const changesMade = new Map();
   let sizeKeys: { [key: string]: number } = {};
-  let currentSize: number = config.get("viewportWidth") ?? 1440;
+  let currentSize: number | undefined = config.get("alwaysUseBreakpoints")
+    ? undefined
+    : config.get("viewportWidth") ?? 1440;
   let color = "";
   //array containing colors for a dark material rainbow
   let colors: string[] = [
@@ -212,6 +212,25 @@ function placeholder(
             }
           }
 
+          if (!forceBreakpoint) {
+            let currentLineNumber =
+              textEditor.document.lineAt(index).lineNumber;
+            while (currentSize === undefined) {
+              if (currentLineNumber < 0) {
+                currentSize = config.get("viewportWidth") ?? 1440;
+              }
+
+              let lineText = textEditor.document.lineAt(currentLineNumber).text;
+              for (const key in sizeKeys) {
+                if (lineText.includes(key)) {
+                  currentSize = sizeKeys[key];
+                  color = colorMap[key];
+                }
+              }
+              currentLineNumber--;
+            }
+          }
+
           if (forceBreakpoint && sizeKeys[forceBreakpoint]) {
             currentSize = sizeKeys[forceBreakpoint];
           }
@@ -240,7 +259,12 @@ function placeholder(
           const regex = regexExpG;
 
           const newText = text.replace(regex, (a, b, c) => {
-            return replaceFunction(a, b, c, currentSize);
+            return replaceFunction(
+              a,
+              b,
+              c,
+              currentSize ?? config.get("viewportWidth") ?? 1440
+            );
           });
           const selectionTmp = new vscode.Selection(index, start, index, end);
           const key = `${index}-${start}-${end}`;

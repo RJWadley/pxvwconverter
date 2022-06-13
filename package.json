@@ -2,7 +2,7 @@
   "name": "px-vw-converter",
   "displayName": "px and vw converter",
   "description": "converts px to vw and vice versa",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publisher": "rjwadley",
   "engines": {
     "vscode": "^1.66.0"
@@ -31,11 +31,17 @@
         "pxVwConverter.breakpoints": {
           "type": "object",
           "default": {
+            "styled": 1440,
             "desktop": 1440,
             "tablet": 834,
             "mobile": 375
           },
           "description": "Breakpoints for responsive conversion"
+        },
+        "pxVwConverter.alwaysUseBreakpoints": {
+          "type": "boolean",
+          "default": true,
+          "description": "Always use breakpoints if possible by reading lines above your selection"
         },
         "pxVwConverter.colorize": {
           "type": "boolean",

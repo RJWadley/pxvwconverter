@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2022-04-07
+
+### Added
+
+- New option, always use breakpoints, that when enabled will search for breakpoints above the current selection to use as a default value
+
 ## [0.2.0] - 2022-04-07
 
 ### Added
