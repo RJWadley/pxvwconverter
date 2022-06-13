@@ -2,7 +2,7 @@
   "name": "px-vw-converter",
   "displayName": "px and vw converter",
   "description": "converts px to vw and vice versa",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "publisher": "rjwadley",
   "engines": {
     "vscode": "^1.66.0"

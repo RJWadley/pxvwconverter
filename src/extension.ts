@@ -214,7 +214,7 @@ function placeholder(
             let currentLineNumber =
               textEditor.document.lineAt(index).lineNumber;
             while (currentSize === undefined) {
-              if (currentLineNumber < 0) {
+              if (currentLineNumber <= 0) {
                 currentSize = config.get("viewportWidth") ?? 1440;
               }
 
